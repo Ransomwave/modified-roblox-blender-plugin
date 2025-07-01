@@ -75,6 +75,10 @@ def export_fbx(scene, view_layer, target_object, exported_file_path, preferences
             use_active_collection=True,
             add_leaf_bones=preferences.add_leaf_bones,
             use_custom_props=preferences.use_custom_props,
+
+            # Custom parameters for my own use
+            use_selection=True,
+            apply_scale_options ="FBX_SCALE_UNITS",
         )
     finally:
         # Return to the previous active LayerCollection
