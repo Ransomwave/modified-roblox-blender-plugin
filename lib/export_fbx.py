@@ -54,6 +54,14 @@ def export_fbx(scene, view_layer, target_object, exported_file_path, preferences
     # input interfering with this selection during export
     view_layer.active_layer_collection = layer_collection
 
+    # Temporarily move all objects in the collection to 0,0,0 so the FBX is exported at the world origin.
+    # Only applied when the "Export at World Origin" preference is enabled.
+    original_locations = {}
+    if preferences.export_at_origin:
+        for obj in collection.all_objects:
+            original_locations[obj] = obj.location.copy()
+            obj.location = (0.0, 0.0, 0.0)
+
     # Ensure cleanup happens while still passing export exceptions through
     try:
         # Because we are using the use_active_collection parameter when we export, only objects from the collection
@@ -81,6 +89,10 @@ def export_fbx(scene, view_layer, target_object, exported_file_path, preferences
             apply_scale_options ="FBX_SCALE_UNITS",
         )
     finally:
+        # Restore each object to its original location (only if we moved them)
+        for obj, loc in original_locations.items():
+            obj.location = loc
+
         # Return to the previous active LayerCollection
         view_layer.active_layer_collection = previous_active_layer_collection
 

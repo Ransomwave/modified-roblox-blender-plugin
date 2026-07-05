@@ -157,6 +157,11 @@ class RbxAddonPreferences(AddonPreferences):
         description="Export Custom Properties",
         default=True,
     )
+    export_at_origin: BoolProperty(
+        name="Export at World Origin",
+        description="Temporarily move all objects to 0, 0, 0 during FBX export so the asset is centred at the world origin in Roblox Studio",
+        default=True,
+    )
 
     def draw(self, context):
         self.layout.label(text="Include")
@@ -166,6 +171,7 @@ class RbxAddonPreferences(AddonPreferences):
         self.layout.label(text="Transform")
         transform_box = self.layout.box()
         transform_box.prop(self, "export_scale")
+        transform_box.prop(self, "export_at_origin")
 
         self.layout.label(text="Armature")
         armature_box = self.layout.box()
